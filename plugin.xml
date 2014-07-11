@@ -1,2 +1,66 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="com.rjfun.cordova.plugin.qihu360ad" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android"><name>Qihu360Ad</name><js-module name="Qihu360Ad" src="www/Qihu360Ad.js"><clobbers target="window.plugins.Qihu360Ad" /></js-module><platform name="android"><config-file parent="/*" target="res/xml/config.xml"><feature name="Qihu360Ad"><param name="android-package" value="com.rjfun.cordova.plugin.qihu360ad.Qihu360Ad" /></feature></config-file><config-file parent="/*" target="AndroidManifest.xml"></config-file><source-file src="src/android/Qihu360Ad.java" target-dir="src/com/rjfun/cordova/plugin/qihu360ad/Qihu360Ad" /></platform></plugin>
+<plugin 
+id="com.rjfun.cordova.plugin.qihu360ad" 
+version="0.0.1" 
+xmlns="http://apache.org/cordova/ns/plugins/1.0" 
+xmlns:android="http://schemas.android.com/apk/res/android">
+
+<name>Qihu360Ad</name>
+<description>Add Qihu360Ad support to your cordova apps or games to earn revenue</description>
+<author>Liming Xie</author>
+<license>MIT</license>
+<keywords>ad,admob,iad,flurry,qihu360,360</keywords>
+<repo>https://github.com/floatinghotpot/cordova-plugin-qihu360ad.git</repo>
+<issue>https://github.com/floatinghotpot/cordova-plugin-qihu360ad/issues</issue>
+
+<engines>
+    <engine name="cordova" version=">=2.9" />
+</engines>
+	
+<js-module name="Qihu360Ad" src="www/Qihu360Ad.js">
+	<clobbers target="window.plugins.Qihu360Ad" />
+</js-module>
+
+<platform name="android">
+
+<config-file parent="/*" target="res/xml/config.xml">
+	<feature name="Qihu360Ad">
+		<param name="android-package" value="com.rjfun.cordova.plugin.Qihu360Ad" />
+	</feature>
+</config-file>
+
+<config-file target="AndroidManifest.xml" parent="/manifest/application">
+	<activity android:name="com.pubukeji.diandeows.adviews.DiandeActivity" android:configChanges="orientation|keyboard|keyboardHidden|screenSize"></activity>
+	<service android:name="com.pubukeji.diandeows.services.DownloadService"></service>
+	<service android:name="com.pubukeji.diandeows.services.UploadService" ></service>
+	<receiver android:name="com.pubukeji.diandeows.reciever.AppInstalledReceiver" >
+		<intent-filter>
+			<action android:name="android.intent.action.PACKAGE_ADDED" />
+			<action android:name="android.intent.action.PACKAGE_REMOVED" />
+			<data android:scheme="package" />
+		</intent-filter>
+	</receiver>
+</config-file>
+
+<config-file target="AndroidManifest.xml" parent="/*">
+	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+	<uses-permission android:name="android.permission.RESTART_PACKAGES"/>
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+	<uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+</config-file>
+
+<source-file src="src/android/Qihu360Ad.java" target-dir="src/com/rjfun/cordova/plugin" />
+<source-file src="src/android/libs/qihu360adsdk_1.0.2.jar" target-dir="libs" />
+<source-file src="src/android/res/anim" target-dir="res" />
+<source-file src="src/android/res/drawable-hdpi" target-dir="res" />
+<source-file src="src/android/res/layout" target-dir="res" />
+<source-file src="src/android/res/values" target-dir="res" />
+
+</platform>
+
+</plugin>
