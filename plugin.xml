@@ -56,10 +56,10 @@ xmlns:android="http://schemas.android.com/apk/res/android">
 
 <source-file src="src/android/Qihu360Ad.java" target-dir="src/com/rjfun/cordova/plugin" />
 <source-file src="src/android/libs/qihu360adsdk_1.0.2.jar" target-dir="libs" />
-<source-file src="src/android/res/anim" target-dir="res" />
-<source-file src="src/android/res/drawable-hdpi" target-dir="res" />
-<source-file src="src/android/res/layout" target-dir="res" />
-<source-file src="src/android/res/values" target-dir="res" />
+<source-file src="src/android/res/anim/*" target-dir="res/anim" />
+<source-file src="src/android/res/drawable-hdpi/*" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/layout/*" target-dir="res/layout" />
+<source-file src="src/android/res/values/*" target-dir="res/values" />
 
 </platform>
 
