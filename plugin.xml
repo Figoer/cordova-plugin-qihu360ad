@@ -56,10 +56,52 @@ xmlns:android="http://schemas.android.com/apk/res/android">
 
 <source-file src="src/android/Qihu360Ad.java" target-dir="src/com/rjfun/cordova/plugin" />
 <source-file src="src/android/libs/qihu360adsdk_1.0.2.jar" target-dir="libs" />
-<source-file src="src/android/res/anim/*" target-dir="res/anim" />
-<source-file src="src/android/res/drawable-hdpi/*" target-dir="res/drawable-hdpi" />
-<source-file src="src/android/res/layout/*" target-dir="res/layout" />
-<source-file src="src/android/res/values/*" target-dir="res/values" />
+
+<source-file src="src/android/res/anim/dianjing_anim_enter.xml" target-dir="res/anim" />
+<source-file src="src/android/res/anim/dianjing_anim_exit.xml" target-dir="res/anim" />
+
+<source-file src="src/android/res/layout/ows_notification_downloadview.xml" target-dir="res/layout" />
+<source-file src="src/android/res/values/dianjing_styles.xml" target-dir="res/values" />
+<source-file src="src/android/res/values/ows_strings.xml" target-dir="res/values" />
+
+<source-file src="src/android/res/drawable-hdpi/dianjing_banner.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/dianjing_next_on.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/dianjing_refresh.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/ows_icon.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/dianjing_close_insertial.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/dianjing_on.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/dianjing_refresh_anim.xml" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/ows_notice.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/dianjing_exit.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/dianjing_out.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/dianjing_refresh_on.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/ows_notice_1.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/dianjing_exit_anim.xml" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/dianjing_out_anim.xml" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/ows_bg_blue.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/ows_pulltorefresh_arrow.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/dianjing_exit_on.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/dianjing_out_on.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/ows_bg_red.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/ows_refresh.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/dianjing_fillbox.xml" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/dianjing_preview.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/ows_display_banner_back.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/ows_search_clear.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/dianjing_loading.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/dianjing_preview_anim.xml" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/ows_display_banner_bg.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/ows_search_click.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/dianjing_next.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/dianjing_preview_off.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/ows_display_banner_text.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/ows_search_side.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/dianjing_next_anim.xml" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/dianjing_preview_on.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/ows_download_ticker.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/dianjing_next_off.png" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/dianjing_progress_anim.xml" target-dir="res/drawable-hdpi" />
+<source-file src="src/android/res/drawable-hdpi/ows_hot.png" target-dir="res/drawable-hdpi" />
 
 </platform>
 
