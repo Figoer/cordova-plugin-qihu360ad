@@ -32,10 +32,6 @@
     </head>
     <body onload="onLoad()" onresize="onResize()">
     <script>
-    var admob_ios_key = 'ca-app-pub-6869992474017983/4806197152';
-    var admob_android_key = 'ca-app-pub-6869992474017983/9375997553';
-    var adId = (navigator.userAgent.indexOf('Android') >=0) ? admob_android_key : admob_ios_key;
-    
     function onLoad() {
     	document.addEventListener("deviceready", onDeviceReady, false);
     	
@@ -43,26 +39,23 @@
     	document.addEventListener('onReceiveAd', function(){
     	});
     	document.addEventListener('onFailedToReceiveAd', function(data){
+    		console.log( data.error );
     	});
     	document.addEventListener('onPresentAd', function(){
     	});
-    	document.addEventListener('onDismissAd', function(){
-    	});
-    	document.addEventListener('onLeaveToAd', function(){
-    	});
     }
     function createAd() {
-    	if ( window.plugins && window.plugins.AdMob ) {
-    	    var am = window.plugins.AdMob;
+    	if ( window.plugins && window.plugins.Qihu360Ad ) {
+    	    var am = window.plugins.Qihu360Ad;
     	    am.createBannerView(
                                 {
-                                'publisherId': adId,
+                                'publisherId': 'cd42c12d7c866aa79c5457782aac0b77',
                                 'adSize': am.AD_SIZE.BANNER,
                                 'bannerAtTop': false,
-                                'overlap': true
+                                'overlap': false
                                 }, function() {
                                 am.requestAd( { 'isTesting':true }, function() {
-                                             am.showAd( true, function(){ onResize(); }, function(){} );
+                                             //am.showAd( true, function(){ onResize(); }, function(){} );
                                              }, function() {
                                              alert('failed to request ad');
                                              })
@@ -72,12 +65,12 @@
                                 
                                 
     	} else {
-    		alert('AdMob plugin not available/ready.');
+    		alert('Qihu360Ad plugin not available/ready.');
     	}
     }
     function removeAd() {
-        if ( window.plugins && window.plugins.AdMob ) {
-    	    var am = window.plugins.AdMob;
+        if ( window.plugins && window.plugins.Qihu360Ad ) {
+    	    var am = window.plugins.Qihu360Ad;
     	    am.destroyBannerView({},function(){onResize();},function(){});
         }
 
@@ -86,18 +79,18 @@
     	createAd();
     }
     function showAd( bshow ) {
-    	if ( window.plugins && window.plugins.AdMob ) {
-    	    var am = window.plugins.AdMob;
+    	if ( window.plugins && window.plugins.Qihu360Ad ) {
+    	    var am = window.plugins.Qihu360Ad;
     	    am.showAd( bshow, function(){ onResize(); }, function(){ alert('please create ad first'); } );
     	} else {
-    		alert('AdMob plugin not available/ready.');
+    		alert('Qihu360Ad plugin not available/ready.');
     	} 
     }
     function showInterstitialAd() {
-        var am = window.plugins.AdMob;
+        var am = window.plugins.Qihu360Ad;
         am.createInterstitialView(
                                   {
-                                  'publisherId': adId,
+                                  'publisherId': 'd0ace24933585ada5a6d146f6b35d865',
                                   },
                                   function() {
                                   am.requestInterstitialAd( { 'isTesting':true }, function() {}, function() {
@@ -115,7 +108,7 @@
     }
     </script>
     <div id="fullpage">
-    <p>Demo for AdMob Plugin</p>
+    <p>Demo for Qihu360Ad Plugin</p>
     <p><button onclick="createAd();">create Ad</button> <button onclick="removeAd();">remove Ad</button></p>
     <p><button onclick="showAd(true);">show Ad</button> <button onclick="showAd(false);">hide Ad</button></p>
     <p><button onclick="showInterstitialAd();">show Interstitial Ad</button></p>
@@ -126,7 +119,7 @@
 <input type="hidden" name="cmd" value="_donations"/>
 <input type="hidden" name="business" value="rjfun.mobile@gmail.com"/>
 <input type="hidden" name="lc" value="GB"/>
-<input type="hidden" name="item_name" value="cordova-plugin-admob"/>
+<input type="hidden" name="item_name" value="cordova-plugin-qihu360ad"/>
 <input type="hidden" name="no_note" value="0"/>
 <input type="hidden" name="currency_code" value="USD"/>
 <input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest"/>

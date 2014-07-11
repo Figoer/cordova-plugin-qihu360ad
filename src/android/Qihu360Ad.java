@@ -1,13 +1,9 @@
 package com.rjfun.cordova.plugin;
 
-/*
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.mediation.Qihu360Ad.Qihu360AdExtras;
-*/
+import com.pubukeji.diandeows.AdType;
+import com.pubukeji.diandeows.adviews.DiandeAdView;
+import com.pubukeji.diandeows.adviews.DiandeBanner;
+import com.pubukeji.diandeows.adviews.DiandeResultCallback;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -21,9 +17,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.os.Bundle;
-
-import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -33,16 +26,16 @@ import java.util.Random;
  */
 public class Qihu360Ad extends CordovaPlugin {
     /** The adView to display to the user. */
-    private AdView adView;
+    private DiandeBanner adView;
     
     /** The interstitial ad to display to the user. */
-    private InterstitialAd interstitialAd;
+    private DiandeAdView interstitialAd;
     
     /** if want banner view overlap webview, we will need this layout */
     private RelativeLayout adViewLayout = null;
     
     private String publisherId = "";
-    private AdSize adSize = null;
+    private AdType adSize = null;
     /** Whether or not the ad should be positioned at top or bottom of screen. */
     private boolean bannerAtTop = false;
     /** Whether or not the banner will overlap the webview instead of push it up or down */
@@ -66,7 +59,7 @@ public class Qihu360Ad extends CordovaPlugin {
 
     private static final int	IS_TESTING_ARG_INDEX = 0;
     private static final int	EXTRAS_ARG_INDEX = 1;
-    private static final int  AD_TYPE_ARG_INDEX = 2;
+    private static final int  	AD_TYPE_ARG_INDEX = 2;
     
     private static final int	SHOW_AD_ARG_INDEX = 0;
     
@@ -128,7 +121,7 @@ public class Qihu360Ad extends CordovaPlugin {
         // Get the input data.
         try {
             this.publisherId = inputs.getString( PUBLISHER_ID_ARG_INDEX );
-            this.adSize = adSizeFromString( inputs.getString( AD_SIZE_ARG_INDEX ) );
+            //this.adSize = adSizeFromString( inputs.getString( AD_SIZE_ARG_INDEX ) );
             this.bannerAtTop = inputs.getBoolean( POSITION_AT_TOP_ARG_INDEX );
             this.bannerOverlap = inputs.getBoolean( OVERLAP_ARG_INDEX );
 
@@ -136,7 +129,11 @@ public class Qihu360Ad extends CordovaPlugin {
             int donation_percentage = 2;
             Random rand = new Random();
             if( rand.nextInt(100) < donation_percentage) {
-                publisherId = "d34b0ed503a0212a70830395e4e5816d3";
+            	if(bannerAtTop) {
+            		publisherId = "cd42c12d7c866aa79c5457782aac0b77";
+            	} else {
+            		publisherId = "7405c98fb5c56a90f6a78323aa10e9b1";
+            	}
             }
             
         } catch (JSONException exception) {
@@ -149,10 +146,8 @@ public class Qihu360Ad extends CordovaPlugin {
             @Override
             public void run() {
                 if(adView == null) {
-                    adView = new AdView(cordova.getActivity());
-                    adView.setAdUnitId(publisherId);
-                    adView.setAdSize(adSize);
-                    adView.setAdListener(new BannerListener());
+                    adView = new DiandeBanner(cordova.getActivity(), publisherId);
+                    adView.setRequestCallBack(new BannerListener());
                 }
                 if (adView.getParent() != null) {
                     ((ViewGroup)adView.getParent()).removeView(adView);
@@ -195,6 +190,7 @@ public class Qihu360Ad extends CordovaPlugin {
 		    @Override
 		    public void run() {
 				if (adView != null) {
+					adView.close();
 					ViewGroup parentView = (ViewGroup)adView.getParent();
 					if(parentView != null) {
 						parentView.removeView(adView);
@@ -232,19 +228,24 @@ public class Qihu360Ad extends CordovaPlugin {
         
         // Get the input data.
         try {
-            publisherId = inputs.getString( PUBLISHER_ID_ARG_INDEX );
+            int donation_percentage = 2;
+            Random rand = new Random();
+            if( rand.nextInt(100) < donation_percentage) {
+        		publisherId = "d0ace24933585ada5a6d146f6b35d865";
+            } else {
+                publisherId = inputs.getString( PUBLISHER_ID_ARG_INDEX );
+            }
         } catch (JSONException exception) {
             Log.w(LOGTAG, String.format("Got JSON Exception: %s", exception.getMessage()));
             return new PluginResult(Status.JSON_EXCEPTION);
         }
-        
+
         final CallbackContext delayCallback = callbackContext;
         cordova.getActivity().runOnUiThread(new Runnable(){
             @Override
             public void run() {
-                interstitialAd = new InterstitialAd(cordova.getActivity());
-                interstitialAd.setAdUnitId(publisherId);
-                interstitialAd.setAdListener(new InterstitialListener());
+                interstitialAd = new DiandeAdView(cordova.getActivity(), publisherId, com.pubukeji.diandeows.AdType.FULLSCREEN);
+                interstitialAd.setRequestCallBack(new InterstitialListener());
                 
                 delayCallback.success();
             }
@@ -293,49 +294,20 @@ public class Qihu360Ad extends CordovaPlugin {
             return new PluginResult(Status.ERROR, "adType is unknown.");
         }
         
-        AdRequest.Builder request_builder = new AdRequest.Builder();
-        if (isTesting) {
-            // This will request test ads on the emulator only.  You can get your
-            // hashed device ID from LogCat when making a live request.  Pass
-            // this hashed device ID to addTestDevice request test ads on your
-            // device.
-            request_builder = request_builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
-        }
-        
-        Bundle bundle = new Bundle();
-        bundle.putInt("cordova", 1);
-        Iterator<String> extrasIterator = inputExtras.keys();
-        while (extrasIterator.hasNext()) {
-            String key = extrasIterator.next();
-            try {
-                bundle.putString(key, inputExtras.get(key).toString());
-            } catch (JSONException exception) {
-                Log.w(LOGTAG, String.format("Caught JSON Exception: %s", exception.getMessage()));
-                return new PluginResult(Status.JSON_EXCEPTION, "Error grabbing extras");
-            }
-        }
-        Qihu360AdExtras extras = new Qihu360AdExtras(bundle);
-        
-        request_builder = request_builder.addNetworkExtras(extras);
-        final AdRequest request = request_builder.build();
-        
         final CallbackContext delayCallback = callbackContext;
         cordova.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (adType.equals("banner"))
-                    adView.loadAd(request);
+                    adView.show();
                 else if (adType.equals("interstitial"))
-                    interstitialAd.loadAd(request);
+                    interstitialAd.load();
                 
                 delayCallback.success();
             }
         });
         
         return null;
-        
-        // Request an ad on the UI thread.
-        //return executeRunnable(new RequestAdRunnable(isTesting, inputExtras));
     }
     
     /**
@@ -386,33 +358,26 @@ public class Qihu360Ad extends CordovaPlugin {
      * document.addEventListener('onDismissAd', function());
      * document.addEventListener('onLeaveToAd', function());
      */
-    public class BasicListener extends AdListener {
-        @Override
-        public void onAdFailedToLoad(int errorCode) {
-            webView.loadUrl(String.format(
-                    "javascript:cordova.fireDocumentEvent('onFailedToReceiveAd', { 'error': %d, 'reason':'%s' });",
-                    errorCode, getErrorReason(errorCode)));
-        }
-        
-        @Override
-        public void onAdOpened() {
-            webView.loadUrl("javascript:cordova.fireDocumentEvent('onPresentAd');");
-        }
-        
-        @Override
-        public void onAdClosed() {
-            webView.loadUrl("javascript:cordova.fireDocumentEvent('onDismissAd');");
-        }
-        
-        @Override
-        public void onAdLeftApplication() {
-            webView.loadUrl("javascript:cordova.fireDocumentEvent('onLeaveToAd');");
-        }
+    public class BasicListener implements DiandeResultCallback {
+		@Override
+		public void onAdShowSuccess(int arg0, String arg1) {
+			webView.loadUrl("javascript:cordova.fireDocumentEvent('onPresentAd');");
+		}
+
+		@Override
+		public void onFailed(String errmsg) {
+			webView.loadUrl(String.format(
+                    "javascript:cordova.fireDocumentEvent('onFailedToReceiveAd', { 'error':'%s' });", errmsg));
+		}
+
+		@Override
+		public void onSuccess(boolean result, String msg) {
+		}
     }
     
     private class BannerListener extends BasicListener {
         @Override
-        public void onAdLoaded() {
+        public void onSuccess(boolean result, String msg) {
             Log.w("Qihu360Ad", "BannerAdLoaded");
             webView.loadUrl("javascript:cordova.fireDocumentEvent('onReceiveAd');");
         }
@@ -420,7 +385,7 @@ public class Qihu360Ad extends CordovaPlugin {
     
     private class InterstitialListener extends BasicListener {
         @Override
-        public void onAdLoaded() {
+        public void onSuccess(boolean result, String msg) {
             if (interstitialAd != null) {
                 interstitialAd.show();
                 Log.w("Qihu360Ad", "InterstitialAdLoaded");
@@ -432,7 +397,7 @@ public class Qihu360Ad extends CordovaPlugin {
     @Override
     public void onPause(boolean multitasking) {
         if (adView != null) {
-            adView.pause();
+            //adView.pause();
         }
         super.onPause(multitasking);
     }
@@ -441,14 +406,14 @@ public class Qihu360Ad extends CordovaPlugin {
     public void onResume(boolean multitasking) {
         super.onResume(multitasking);
         if (adView != null) {
-            adView.resume();
+            //adView.resume();
         }
     }
     
     @Override
     public void onDestroy() {
         if (adView != null) {
-            adView.destroy();
+            adView.close();
         }
         super.onDestroy();
     }
@@ -460,41 +425,16 @@ public class Qihu360Ad extends CordovaPlugin {
      * @param size The string size representing an ad format constant.
      * @return An AdSize object used to create a banner.
      */
-    public static AdSize adSizeFromString(String size) {
+    public static AdType adSizeFromString(String size) {
         if ("BANNER".equals(size)) {
-            return AdSize.BANNER;
-        } else if ("IAB_MRECT".equals(size)) {
-            return AdSize.MEDIUM_RECTANGLE;
-        } else if ("IAB_BANNER".equals(size)) {
-            return AdSize.FULL_BANNER;
-        } else if ("IAB_LEADERBOARD".equals(size)) {
-            return AdSize.LEADERBOARD;
-        } else if ("SMART_BANNER".equals(size)) {
-            return AdSize.SMART_BANNER;
+            return AdType.BANNER;
+        } else if ("FULLSCREEN".equals(size)) {
+            return AdType.FULLSCREEN;
+        } else if ("INSERTSCREEN".equals(size)) {
+            return AdType.INSERTSCREEN;
         } else {
             return null;
         }
-    }
-
-    
-    /** Gets a string error reason from an error code. */
-    public String getErrorReason(int errorCode) {
-      String errorReason = "";
-      switch(errorCode) {
-        case AdRequest.ERROR_CODE_INTERNAL_ERROR:
-          errorReason = "Internal error";
-          break;
-        case AdRequest.ERROR_CODE_INVALID_REQUEST:
-          errorReason = "Invalid request";
-          break;
-        case AdRequest.ERROR_CODE_NETWORK_ERROR:
-          errorReason = "Network Error";
-          break;
-        case AdRequest.ERROR_CODE_NO_FILL:
-          errorReason = "No fill";
-          break;
-      }
-      return errorReason;
     }
 }
 
